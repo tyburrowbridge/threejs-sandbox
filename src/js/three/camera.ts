@@ -8,5 +8,8 @@ export const getCamera = (): THREE.PerspectiveCamera => {
     1000
   )
 
+  // position camera
+  camera.position.z = 5
+
   return camera
 }

@@ -2,6 +2,10 @@ import { useEffect } from 'react'
 import React from 'react'
 import * as THREE from 'three'
 
+import { getCamera } from '../three/camera'
+import { getRenderer } from '../three/renderer'
+import { getCube } from '../three/cube'
+
 interface ThreeSceneProps {}
 
 export const ThreeScene: React.FC<ThreeSceneProps> = () => {
@@ -10,41 +14,29 @@ export const ThreeScene: React.FC<ThreeSceneProps> = () => {
     const scene = new THREE.Scene()
 
     // camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
+    const camera = getCamera()
 
     // renderer
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    document.body.appendChild(renderer.domElement)
+    const renderer = getRenderer()
 
-    // geometry
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
+    // scene objects
+    const cube = getCube()
 
-    // material
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-
-    // cube (geometry + material)
-    const cube = new THREE.Mesh(geometry, material)
-
-    // add cube to scene
-    scene.add(cube)
-
-    // position camera
-    camera.position.z = 5
+    // add objects to scene
+    const sceneObjects = [cube]
+    sceneObjects.map((o: any) => {
+      return scene.add(o)
+    })
 
     // animate the cube
-    const animate = () => {
-      requestAnimationFrame(animate)
+    const tick = () => {
+      requestAnimationFrame(tick)
       cube.rotation.x += 0.01
       cube.rotation.y += 0.01
+      cube.rotation.z += 0.01
       renderer.render(scene, camera)
     }
-    animate()
+    tick()
   }, [])
 
   return <div />
