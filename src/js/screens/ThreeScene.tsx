@@ -4,7 +4,8 @@ import * as THREE from 'three'
 
 import { getCamera } from '../three/camera'
 import { getRenderer } from '../three/renderer'
-import { getCube } from '../three/cube'
+import { getBlobs } from '../three/blobs'
+import { getGlobe } from '../three/globe'
 
 interface ThreeSceneProps {}
 
@@ -20,23 +21,30 @@ export const ThreeScene: React.FC<ThreeSceneProps> = () => {
     const renderer = getRenderer()
 
     // scene objects
-    const cube = getCube()
+    const blobs = getBlobs()
+    const globe = getGlobe()
 
     // add objects to scene
-    const sceneObjects = [cube]
+    const sceneObjects = [blobs]
     sceneObjects.map((o: any) => {
       return scene.add(o)
     })
 
-    // animate the cube
-    const tick = () => {
-      requestAnimationFrame(tick)
-      cube.rotation.x += 0.01
-      cube.rotation.y += 0.01
-      cube.rotation.z += 0.01
+    // animation
+    const animate = () => {
+      requestAnimationFrame(animate)
+      render()
+    }
+
+    const render = () => {
       renderer.render(scene, camera)
     }
-    tick()
+
+    animate()
+
+    return () => {
+      scene.remove(blobs)
+    }
   }, [])
 
   return <div />
