@@ -4,8 +4,7 @@ import * as THREE from 'three'
 
 import { getCamera } from '../three/camera'
 import { getRenderer } from '../three/renderer'
-import { getBlobs } from '../three/blobs'
-import { getGlobe } from '../three/globe'
+import { getCorona } from '../three/components/corona'
 
 interface ThreeSceneProps {}
 
@@ -20,18 +19,21 @@ export const ThreeScene: React.FC<ThreeSceneProps> = () => {
     // renderer
     const renderer = getRenderer()
 
-    // scene objects
-    const blobs = getBlobs()
-    const globe = getGlobe()
+    // const blobs = getBlobs()
+    // const globe = getGlobe()
+    const corona = getCorona()
 
     // add objects to scene
-    const sceneObjects = [blobs]
+    const sceneObjects = [corona]
     sceneObjects.map((o: any) => {
       return scene.add(o)
     })
 
     // animation
-    const animate = () => {
+    const animate = (time: number) => {
+      // @ts-ignore
+      corona.material.uniforms.time.value = time / 1000
+
       requestAnimationFrame(animate)
       render()
     }
@@ -40,10 +42,10 @@ export const ThreeScene: React.FC<ThreeSceneProps> = () => {
       renderer.render(scene, camera)
     }
 
-    animate()
+    animate(0)
 
     return () => {
-      scene.remove(blobs)
+      scene.remove(corona)
     }
   }, [])
 
