@@ -1,8 +1,9 @@
 import * as THREE from 'three'
 
-export const getRenderer = (): THREE.Renderer => {
+export const getRenderer = (width: number, height: number): THREE.Renderer => {
   const renderer = new THREE.WebGLRenderer()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+
+  renderer.setSize(width, height)
   document.body.appendChild(renderer.domElement)
 
   return renderer
